@@ -44,6 +44,20 @@ def naked_twins(values):
     strategy repeatedly).
     """
     # TODO: Implement this function!
+    
+    boxes = [box for box in values.keys() if len(values[box]) == 2]
+    naked_twins = [[box1,box2] for box1 in boxes for box2 in peers[box1] if set(values[box1])==set(values[box2])]
+    for i in range(len(naked_twins)):
+        box1 = naked_twins[i][0]
+        box2 = naked_twins[i][1]
+        box1peers = set(peers[box1])
+        box2peers = set(peers[box2])
+        commonpeers = box1peers & box2peers
+        for peerval in commonpeers:
+            if len(values[peerval])>2:
+                for v in values[box1]:
+                    values = assign_value(values, peerval, values[peerval].replace(v,''))
+    return values
     #raise NotImplementedError
 
 
