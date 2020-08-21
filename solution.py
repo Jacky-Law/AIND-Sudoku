@@ -44,7 +44,7 @@ def naked_twins(values):
     strategy repeatedly).
     """
     # TODO: Implement this function!
-    raise NotImplementedError
+    #raise NotImplementedError
 
 
 def eliminate(values):
@@ -78,7 +78,7 @@ def eliminate(values):
         values[box] = val
     return values
 
-    raise NotImplementedError
+    #raise NotImplementedError
 
 
 def only_choice(values):
@@ -102,7 +102,7 @@ def only_choice(values):
     You should be able to complete this function by copying your code from the classroom
     """
     # TODO: Copy your code from the classroom to complete this function
-    raise NotImplementedError
+    #raise NotImplementedError
 
 
 def reduce_puzzle(values):
@@ -121,7 +121,7 @@ def reduce_puzzle(values):
     """
     # TODO: Copy your code from the classroom and modify it to complete this function
     return eliminate(values)
-    raise NotImplementedError
+    #raise NotImplementedError
 
 
 def search(values):
@@ -146,7 +146,7 @@ def search(values):
     # TODO: Copy your code from the classroom to complete this function
     values = reduce_puzzle(values)
     return values
-    raise NotImplementedError
+    #raise NotImplementedError
 
 
 def solve(grid):
