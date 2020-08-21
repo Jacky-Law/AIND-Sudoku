@@ -64,7 +64,6 @@ def eliminate(values):
         The values dictionary with the assigned values eliminated from peers
     """
     # TODO: Copy your code from the classroom to complete this function
-
     unsignedbox = {k for k in values.keys() if len(values[k]) > 1}
     for box in unsignedbox:
         vset = set()
@@ -102,6 +101,21 @@ def only_choice(values):
     You should be able to complete this function by copying your code from the classroom
     """
     # TODO: Copy your code from the classroom to complete this function
+
+
+    unsignedbox = [k for k in values.keys() if len(values[k]) > 1]
+    for box in unsignedbox:
+        vset = set()
+        for peer in peers[box]:     
+            for v in values[peer]:
+                vset.add(v)
+        dd = set(values[box])-vset
+        if len(dd) == 1:
+            values = assign_value(values, box, dd.pop())
+    return values
+
+
+
     #raise NotImplementedError
 
 
@@ -120,7 +134,9 @@ def reduce_puzzle(values):
         no longer produces any changes, or False if the puzzle is unsolvable 
     """
     # TODO: Copy your code from the classroom and modify it to complete this function
-    return eliminate(values)
+    values = eliminate(values)
+    values = only_choice(values)
+    return values
     #raise NotImplementedError
 
 
