@@ -45,8 +45,8 @@ def naked_twins(values):
     """
     # TODO: Implement this function!
     
-    boxes = [box for box in values.keys() if len(values[box]) == 2]
-    naked_twins = [[box1,box2] for box1 in boxes for box2 in peers[box1] if set(values[box1])==set(values[box2])]
+    mboxes = [box for box in values.keys() if len(values[box]) == 2]
+    naked_twins = [[box1,box2] for box1 in mboxes for box2 in peers[box1] if set(values[box1])==set(values[box2])]
     for i in range(len(naked_twins)):
         box1 = naked_twins[i][0]
         box2 = naked_twins[i][1]
@@ -88,7 +88,8 @@ def eliminate(values):
         val = ''
         for v in tmpv:
             val += v
-        values[box] = val
+        
+        values = assign_value(values, box, val)
     return values
 
     #raise NotImplementedError
@@ -123,9 +124,9 @@ def only_choice(values):
         for peer in peers[box]:     
             for v in values[peer]:
                 vset.add(v)
-        dd = set(values[box])-vset
+        dd = list(set(values[box])-vset)
         if len(dd) == 1:
-            values = assign_value(values, box, dd.pop())
+            values = assign_value(values, box, dd[0])
     return values
 
 
@@ -148,8 +149,23 @@ def reduce_puzzle(values):
         no longer produces any changes, or False if the puzzle is unsolvable 
     """
     # TODO: Copy your code from the classroom and modify it to complete this function
-    values = eliminate(values)
-    values = only_choice(values)
+
+
+    flag = False
+
+    while not flag:
+        beforesign = len([box for box in values.keys() if len(values[box]) == 1])
+        values = eliminate(values)
+        values = only_choice(values)
+        values = naked_twins(values)
+        aftersign = len([box for box in values.keys() if len(values[box]) == 1])
+
+        if beforesign  == aftersign:
+            flag = True
+        else:
+            flag = False
+        if len([box for box in values.keys() if len(values[box]) == 0]):
+            return False
     return values
     #raise NotImplementedError
 
@@ -175,7 +191,18 @@ def search(values):
     """
     # TODO: Copy your code from the classroom to complete this function
     values = reduce_puzzle(values)
-    return values
+    if values == False:
+        return False
+
+    if all(len(values[s]) == 1 for s in boxes):
+        return values
+    _, k = min((len(values[k]), k) for k in boxes if len(values[k]) > 1)
+    for value in values[k]:
+        new_sudoku = values.copy()
+        new_sudoku[k] = value
+        flag = search(new_sudoku)
+        if flag:
+            return flag
     #raise NotImplementedError
 
 
@@ -207,7 +234,7 @@ if __name__ == "__main__":
 
     try:
         import PySudoku
-        #PySudoku.play(grid2values(diag_sudoku_grid), result, history)
+        PySudoku.play(grid2values(diag_sudoku_grid), result, history)
 
     except SystemExit:
         pass
