@@ -64,6 +64,20 @@ def eliminate(values):
         The values dictionary with the assigned values eliminated from peers
     """
     # TODO: Copy your code from the classroom to complete this function
+
+    unsignedbox = {k for k in values.keys() if len(values[k]) > 1}
+    for box in unsignedbox:
+        vset = set()
+        for k in peers[box]:
+            if len(values[k]) == 1:
+                vset.add(values[k])
+        tmpv = set(values[box])-vset
+        val = ''
+        for v in tmpv:
+            val += v
+        values[box] = val
+    return values
+
     raise NotImplementedError
 
 
@@ -106,6 +120,7 @@ def reduce_puzzle(values):
         no longer produces any changes, or False if the puzzle is unsolvable 
     """
     # TODO: Copy your code from the classroom and modify it to complete this function
+    return eliminate(values)
     raise NotImplementedError
 
 
@@ -129,6 +144,8 @@ def search(values):
     and extending it to call the naked twins strategy.
     """
     # TODO: Copy your code from the classroom to complete this function
+    values = reduce_puzzle(values)
+    return values
     raise NotImplementedError
 
 
@@ -160,7 +177,7 @@ if __name__ == "__main__":
 
     try:
         import PySudoku
-        PySudoku.play(grid2values(diag_sudoku_grid), result, history)
+        #PySudoku.play(grid2values(diag_sudoku_grid), result, history)
 
     except SystemExit:
         pass
