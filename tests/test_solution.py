@@ -4,6 +4,8 @@ many additional test cases that you must also pass to complete the project. You 
 own additional test cases to cover any failed tests shown in the Project Assistant feedback.
 """
 import unittest
+import sys
+sys.path.append("..")
 import solution
 
 

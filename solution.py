@@ -47,6 +47,11 @@ def naked_twins(values):
     
     mboxes = [box for box in values.keys() if len(values[box]) == 2]
     naked_twins = [[box1,box2] for box1 in mboxes for box2 in peers[box1] if set(values[box1])==set(values[box2])]
+
+    naked_twins_set = set()
+    for i in naked_twins:
+        for j in i:
+            naked_twins_set.add(j)
     for i in range(len(naked_twins)):
         box1 = naked_twins[i][0]
         box2 = naked_twins[i][1]
@@ -54,7 +59,7 @@ def naked_twins(values):
         box2peers = set(peers[box2])
         commonpeers = box1peers & box2peers
         for peerval in commonpeers:
-            if len(values[peerval])>2:
+            if len(values[peerval])>1 and peerval not in naked_twins_set:
                 for v in values[box1]:
                     values = assign_value(values, peerval, values[peerval].replace(v,''))
     return values
@@ -193,15 +198,17 @@ def search(values):
     values = reduce_puzzle(values)
     if values == False:
         return False
-
+    
     if all(len(values[s]) == 1 for s in boxes):
         return values
     _, k = min((len(values[k]), k) for k in boxes if len(values[k]) > 1)
     for value in values[k]:
         new_sudoku = values.copy()
         new_sudoku[k] = value
+        
         flag = search(new_sudoku)
         if flag:
+            assign_value(values, k, value)
             return flag
     #raise NotImplementedError
 
